@@ -1,5 +1,4 @@
 const { app } = require('@azure/functions');
-const { BlobServiceClient } = require('@azure/storage-blob');
 const sql = require('mssql');
 
 app.storageBlob('storageBlobTrigger2', {
@@ -28,14 +27,10 @@ app.storageBlob('storageBlobTrigger2', {
             let pool = await sql.connect(config);
             const lines = blobText.split('\n')
 
-            // // Blobの内容を半角スペースで分割
-            // const [name, email, password] = blobText.split(' ');
-
             for(let line of lines){
                 const [name, email, password] = line.split(' ');
                 // データをusersテーブルにインサート
                 await pool.request()
-                // .input('id', sql.Int, id)
                 // データをusersテーブルにインサート
                 await pool.request()
                 .input('name', sql.NVarChar, name)
@@ -49,6 +44,6 @@ app.storageBlob('storageBlobTrigger2', {
             context.log('Error occurred while connecting to the database or inserting data: ', err);
         }
 
-        context.log('triggered!!!!')
+        context.log('function triggered!!!')
     }
 });
